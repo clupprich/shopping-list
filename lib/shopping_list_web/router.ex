@@ -17,7 +17,10 @@ defmodule ShoppingListWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/lists", ListController, except: [:index]
+
+    resources "/lists", ListController, except: [:index] do
+      resources "/items", ItemController, only: [:create, :update, :delete]
+    end
   end
 
   # Other scopes may use custom stacks.

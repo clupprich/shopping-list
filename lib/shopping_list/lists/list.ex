@@ -8,6 +8,8 @@ defmodule ShoppingList.Lists.List do
     field :token, :string
     field :name, :string
 
+    has_many :items, ShoppingList.Lists.Item
+
     timestamps()
   end
 

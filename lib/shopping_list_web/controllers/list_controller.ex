@@ -2,7 +2,6 @@ defmodule ShoppingListWeb.ListController do
   use ShoppingListWeb, :controller
 
   alias ShoppingList.Lists
-  alias ShoppingList.Lists.List
 
   def new(conn, _params) do
     list_params = %{token: ShoppingList.Lists.Token.generate(16)}
@@ -15,7 +14,7 @@ defmodule ShoppingListWeb.ListController do
 
       {:error, %Ecto.Changeset{} = _} ->
         conn
-        |> put_flash(:error, "Cannot create list.")
+        |> put_flash(:error, "Failed to create list.")
         |> redirect(to: Routes.static_path(conn, "/"))
     end
   end
@@ -33,7 +32,8 @@ defmodule ShoppingListWeb.ListController do
   end
 
   def show(conn, %{"id" => id}) do
-    list = Lists.get_list!(id)
+    list = Lists.get_list_with_items!(id)
+
     render(conn, "show.html", list: list)
   end
 

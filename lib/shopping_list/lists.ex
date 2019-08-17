@@ -7,6 +7,7 @@ defmodule ShoppingList.Lists do
   alias ShoppingList.Repo
 
   alias ShoppingList.Lists.List
+  alias ShoppingList.Lists.Item
 
   @doc """
   Gets a single list.
@@ -23,6 +24,11 @@ defmodule ShoppingList.Lists do
 
   """
   def get_list!(id), do: Repo.get_by!(List, token: id)
+
+  def get_list_with_items!(id) do
+    Repo.get_by!(List, token: id)
+    |> Repo.preload(:items)
+  end
 
   @doc """
   Creates a list.
@@ -87,5 +93,12 @@ defmodule ShoppingList.Lists do
   """
   def change_list(%List{} = list) do
     List.changeset(list, %{})
+  end
+
+  def create_item(%List{} = list, attrs \\ %{}) do
+    list
+    |> Ecto.build_assoc(:items)
+    |> Item.changeset(attrs)
+    |> Repo.insert()
   end
 end

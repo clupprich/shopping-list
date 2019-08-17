@@ -1,3 +1,14 @@
 <h1><%= list_name(@list) %></h1>
 
+<ul>
+  <%= for item <- @list.items do %>
+    <%= render ShoppingListWeb.ItemView, "item.html", item: item %>
+  <% end %>
+</ul>
+
+<%= form_for @conn, Routes.list_item_path(@conn, :create, @list), [as: :item], fn f -> %>
+  <%= text_input f, :name %>
+  <%= submit "Add" %>
+<% end %>
+
 <span><%= link "Edit", to: Routes.list_path(@conn, :edit, @list) %></span>
